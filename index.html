@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Le saviez-vous ? 💧</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #e3f2fd, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            max-width: 560px;
+        }
+
+        h2 {
+            color: #0277bd;
+            margin-bottom: 15px;
+        }
+
+        #fact {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #source {
+            font-size: 13px;
+            color: #555;
+        }
+
+        button {
+            margin: 10px 5px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            background-color: #0288d1;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0277bd;
+        }
+
+        #sourcesBox {
+            display: none;
+            margin-top: 20px;
+            font-size: 13px;
+            text-align: left;
+            max-height: 220px;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        ul {
+            padding-left: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>💧 Le saviez-vous ?</h2>
+
+    <p id="fact"></p>
+    <p id="source"></p>
+
+    <button onclick="nouveauFact()">Nouveau fact</button>
+    <button onclick="toggleSources()">Voir toutes les sources</button>
+
+    <div id="sourcesBox">
+        <strong>Sources scientifiques et institutionnelles :</strong>
+        <ul>
+            <li>Banque mondiale – Water Resources in Morocco</li>
+            <li>FAO – AQUASTAT & Groundwater Management</li>
+            <li>WHO – Domestic Water Use & Drinking Water</li>
+            <li>ONEE – Eau potable, dessalement et réseaux</li>
+            <li>ADEME – Consommation domestique & économies d’eau</li>
+            <li>UNESCO – Water Education</li>
+            <li>GIEC (IPCC) – Climate Change and Water</li>
+            <li>Royaume du Maroc – Plan National de l’Eau 2020–2050</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+const facts = [
+    {
+        text: "Le Maroc est en situation de stress hydrique avec une disponibilité inférieure à 600 m³ par habitant et par an.",
+        source: "Banque mondiale"
+    },
+    {
+        text: "Le seuil international de pénurie hydrique est fixé à 1 000 m³ par habitant et par an.",
+        source: "FAO – AQUASTAT"
+    },
+    {
+        text: "La disponibilité en eau au Maroc est passée de plus de 2 500 m³ par habitant en 1960 à moins de 600 m³ aujourd’hui.",
+        source: "Banque mondiale"
+    },
+    {
+        text: "Les barrages marocains perdent une partie de leur capacité à cause de l’envasement.",
+        source: "Ministère de l’Équipement et de l’Eau"
+    },
+    {
+        text: "Les nappes phréatiques sont surexploitées, notamment dans les régions du Souss et du Haouz.",
+        source: "FAO / Agences de bassins hydrauliques"
+    },
+    {
+        text: "Le dessalement de l’eau de mer est une solution stratégique mais fortement consommatrice d’énergie.",
+        source: "ONEE"
+    },
+    {
+        text: "Moins de 15 % des eaux usées traitées sont réutilisées au Maroc.",
+        source: "Banque mondiale / FAO"
+    },
+    {
+        text: "Fermer le robinet pendant le brossage des dents permet d’économiser jusqu’à 15 litres d’eau.",
+        source: "ADEME"
+    },
+    {
+        text: "Prendre une douche plutôt qu’un bain permet d’économiser jusqu’à 100 litres d’eau.",
+        source: "WHO"
+    },
+    {
+        text: "Plus de 2 milliards de personnes dans le monde n’ont pas accès à une eau potable sécurisée.",
+        source: "WHO / UNICEF"
+    },
+    {
+        text: "Recycler les eaux grises permet de réduire la consommation domestique d’eau jusqu’à 30 %.",
+        source: "WHO – Water Reuse"
+    },
+    {
+        text: "Une chasse d’eau à double débit permet d’économiser jusqu’à 50 % d’eau.",
+        source: "ADEME"
+    },
+    {
+        text: "Laisser couler l’eau pendant le rasage peut gaspiller jusqu’à 20 litres d’eau.",
+        source: "ADEME"
+    },
+    {
+        text: "Un pommeau de douche économique permet de réduire la consommation d’eau de près de moitié.",
+        source: "ADEME / WHO"
+    },
+    {
+        text: "Éteindre le robinet pendant le savonnage permet d’économiser des dizaines de litres d’eau.",
+        source: "ADEME"
+    },
+    {
+        text: "L’eau est indispensable à la production d’électricité dans de nombreux pays.",
+        source: "IEA / UNESCO"
+    },
+    {
+        text: "Les nappes phréatiques peuvent mettre des centaines d’années à se reconstituer.",
+        source: "FAO – Groundwater"
+    },
+    {
+        text: "Une fuite de chasse d’eau peut gaspiller plus de 600 litres d’eau par jour.",
+        source: "WHO"
+    },
+    {
+        text: "Un robinet qui fuit peut entraîner une perte de plus de 120 litres d’eau par jour.",
+        source: "ADEME"
+    },
+    {
+        text: "Les équipements hydro-économes peuvent réduire la consommation d’eau domestique de 30 à 50 %.",
+        source: "WHO"
+    },
+        {
+        text: "Une chasse d’eau classique consomme jusqu’à 12 litres à chaque utilisation.",
+        source: "WHO / ADEME"
+    },
+    {
+        text: "Une fuite de chasse d’eau peut gaspiller plus de 600 litres d’eau par jour.",
+        source: "WHO – Domestic Water Use"
+    },
+    {
+        text: "Un robinet qui fuit peut entraîner une perte de plus de 120 litres d’eau par jour.",
+        source: "ADEME"
+    },
+    {
+        text: "Une douche de 5 minutes consomme en moyenne 60 litres d’eau.",
+        source: "ADEME"
+    },
+    {
+        text: "Un bain consomme entre 150 et 200 litres d’eau.",
+        source: "WHO"
+    },
+    {
+        text: "Fermer le robinet pendant le brossage des dents permet d’économiser jusqu’à 15 litres.",
+        source: "ADEME"
+    },
+    {
+        text: "Un lave-vaisselle récent consomme en moyenne 10 à 15 litres par cycle.",
+        source: "Commission européenne – EcoDesign"
+    },
+    {
+        text: "La vaisselle à la main avec le robinet ouvert peut consommer jusqu’à 100 litres.",
+        source: "ADEME"
+    },
+    {
+        text: "Les équipements hydro-économes réduisent la consommation d’eau domestique de 30 à 50 %.",
+        source: "WHO"
+    },
+    {
+        text: "L’eau chaude sanitaire représente environ 12 % de la facture énergétique d’un logement.",
+        source: "ADEME"
+    },
+    {
+        text: "Les pertes dans les réseaux d’eau potable peuvent atteindre 30 % dans certaines villes.",
+        source: "ONEE"
+    },
+    {
+        text: "Boire de l’eau du robinet génère jusqu’à 100 fois moins de CO₂ que l’eau en bouteille.",
+        source: "ADEME – Analyse du cycle de vie"
+    },
+    {
+        text: "L’eau en bouteille peut coûter jusqu’à 300 fois plus cher que l’eau du robinet.",
+        source: "WHO"
+    },
+    {
+        text: "Chaque litre d’eau économisé permet aussi d’économiser l’énergie liée à son traitement et son transport.",
+        source: "ONEE"
+    },
+    {
+        text: "Les nappes phréatiques mettent plusieurs décennies à se reconstituer naturellement.",
+        source: "FAO"
+    },
+    {
+        text: "La pollution de l’eau réduit fortement la quantité d’eau réellement utilisable.",
+        source: "FAO"
+    },
+    {
+        text: "Une hausse de température augmente l’évaporation et accentue le stress hydrique.",
+        source: "GIEC (IPCC)"
+    },
+    {
+        text: "Au Maroc, la disponibilité en eau est inférieure à 600 m³ par habitant et par an.",
+        source: "Banque mondiale"
+    },
+    {
+        text: "Le Maroc est classé en situation de stress hydrique sévère selon les normes internationales.",
+        source: "FAO – AQUASTAT"
+    },
+    {
+        text: "La sensibilisation des ménages est l’un des leviers les plus efficaces pour réduire durablement la consommation d’eau.",
+        source: "UNESCO"
+    }
+];
+
+let dernierIndex = -1;
+
+function nouveauFact() {
+    let index;
+    do {
+        index = Math.floor(Math.random() * facts.length);
+    } while (index === dernierIndex);
+
+    dernierIndex = index;
+
+    document.getElementById("fact").textContent = facts[index].text;
+    document.getElementById("source").textContent = "Source : " + facts[index].source;
+}
+
+function toggleSources() {
+    const box = document.getElementById("sourcesBox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+}
+
+nouveauFact();
+</script>
+
+</body>
+</html>
